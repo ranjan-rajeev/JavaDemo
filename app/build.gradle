@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'rebelfoods'
+            keyPassword 'rebelfoods'
+            storeFile file('D:/Rajeev/signedapk/RebelFoods/rebelfoods.jks')
+            storePassword 'rebelfoods'
+        }
+    }
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+
+            debuggable false
+            jniDebuggable false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.config
+            proguardFile 'D:/Rajeev/signedapk/RebelFoods/rebelfoods.jks'
+        }
+    }
+    productFlavors {
+        flavorDimensions "default"
+        paid {
+            applicationId "com.horizonlabs.demojava.paid"
+            resValue "string", "app_name", "Demo"
+            versionCode 1
+            versionName "1.0.0"
+            signingConfig signingConfigs.config
+        }
+        free {
+            applicationId "com.horizonlabs.demojava"
+            resValue "string", "app_name", "Demo"
+            versionCode 1
+            versionName "1.0.0"
+            signingConfig signingConfigs.config
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+configurations {
+    freeDebugImplementation
+    paidDebugImplementation
+    freeReleaseImplementation
+    paidReleaseImplementation
+}
+
+dependencies {
+    final ROOM_VERSION = '1.1.1'
+    final LIFECYCLE_VERSION = '1.1.1'
+    final RETROFIT_VERSION = '2.6.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    // Room SQLite for data persistence
+    implementation 'androidx.room:room-runtime:2.2.0-alpha01'
+    annotationProcessor 'androidx.room:room-compiler:2.2.0-alpha01'
+}
