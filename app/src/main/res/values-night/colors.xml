@@ -9,8 +9,8 @@
     <color name="header_dark_text">@android:color/white</color>
     <color name="header_light_text">#DDFFFFFF</color>
     <color name="description_text">#AAFFFFFF</color>
-
-
+    <color name="hint_text">#929292</color>
+    <color name="cv_bg">#5D5C5D</color>
 
     <color name="description_light">#E1DEDE</color>
     <color name="progress_grey">#cecece</color>
