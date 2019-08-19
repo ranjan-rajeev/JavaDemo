@@ -1,4 +1,4 @@
-package com.horizonlabs.demoprojectjava;
+package com.horizonlabs.demoprojectjava.view.activity;
 
 import android.os.Bundle;
 
@@ -7,23 +7,39 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.horizonlabs.demoprojectjava.R;
+import com.horizonlabs.demoprojectjava.adpaters.UserAdapter;
+import com.horizonlabs.demoprojectjava.data.remote.ApiResponse;
+import com.horizonlabs.demoprojectjava.model.UserEntity;
+import com.horizonlabs.demoprojectjava.view.base.BaseActivity;
+import com.horizonlabs.demoprojectjava.viewmodel.UserViewModel;
 
+import java.util.List;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Spinner spinner;
+    RecyclerView rvAllUsers;
+    UserViewModel userViewModel;
+    UserAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +49,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        spinner = findViewById(R.id.spinner);
-        spinner.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.month)));
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -53,6 +57,28 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        rvAllUsers = findViewById(R.id.rvAllUsers);
+        rvAllUsers.setLayoutManager(new LinearLayoutManager(this));
+        rvAllUsers.setHasFixedSize(true);
+        userAdapter = new UserAdapter(this);
+        rvAllUsers.setAdapter(userAdapter);
+
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
+
+        userViewModel.getAllUser().observe(this, listApiResponse -> {
+
+            if (listApiResponse.status == ApiResponse.ApiStatus.SUCCESS) {
+                cancelDialog();
+                userAdapter.setUserEntities(listApiResponse.data);
+            } else if (listApiResponse.status == ApiResponse.ApiStatus.LOADING) {
+                showDialog(MainActivity.this);
+            } else {
+                Toast.makeText(this, "Please try after sometime!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

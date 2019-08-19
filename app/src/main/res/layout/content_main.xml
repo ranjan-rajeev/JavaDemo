@@ -8,63 +8,14 @@
     android:orientation="vertical"
     android:padding="8dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
+    tools:context=".view.activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <androidx.cardview.widget.CardView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAllUsers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp">
-
-        <LinearLayout
-            style="@style/CustomCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle.Large"
-                android:text="@string/dummy" />
-
-            <TextView
-                style="@style/TextViewStyle.Medium"
-                android:text="@string/dummy" />
-
-            <TextView
-                style="@style/TextViewStyle.Small"
-                android:text="@string/dummy" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/CustomTextInputLayout"
-                android:hint="hint text">
-
-                <EditText style="@style/Style.edittext" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/CustomTextInputLayout"
-                android:hint="hint text">
-
-                <EditText style="@style/Style.edittext" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                style="@style/ButtonStyleRound"
-                android:text="@string/app_name" />
-
-            <Button
-                style="@style/ButtonStyle"
-                android:text="@string/app_name" />
-
-            <Spinner
-
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                style="@style/SpinnerStyle"
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></Spinner>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_all_user" />
 
 
 </LinearLayout>
